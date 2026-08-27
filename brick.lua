@@ -35,14 +35,14 @@ function brick.newBrick(x, y, w, h, callback)
          math.min(a_max_x, b_max_x) - math.max(a_min_x, b_min_x) >
          math.min(a_max_y, b_max_y) - math.max(a_min_y, b_min_y)
         then
-          if ball.vy < 0 then
+          if b_min_y > a_min_y  then
             ball.y = self.y + self.h
           else
             ball.y = self.y - ball.h
           end
           ball.vy = -ball.vy
         else
-          if ball.vx < 0 then
+          if b_min_x > a_min_x then
             ball.x = self.x + self.w
           else
             ball.x = self.x - ball.w
