@@ -6,7 +6,8 @@ function paddle.new(y, width)
     x = 0,
     y = y,
     width = width,
-    hits = 0
+    hits = 0,
+    hitSound = love.audio.newSource("paddleHit.wav", "static")
   }
   local LUT = { -- TODO: add last from https://archive.org/details/super-breakout-game-manual-atari-2600-1981/page/4/mode/2up
     {
@@ -53,6 +54,8 @@ function paddle.new(y, width)
         end
       end
       self.hits = self.hits + 1
+      self.hitSound:setPitch(math.random()/5 + 1)
+      love.audio.play(self.hitSound)
     end
   end
 

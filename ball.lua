@@ -8,7 +8,8 @@ function balllib.newBall(loseCallback)
     h = 20,
     vx = 100,
     vy = 100,
-    loseCallback = loseCallback
+    loseCallback = loseCallback,
+    wallHitSound = love.audio.newSource("wallhit.wav", "static")
   }
 
   function ball:update(dt)
@@ -18,10 +19,12 @@ function balllib.newBall(loseCallback)
     if self.x < 0 then
       self.x = 0
       self.vx = -self.vx
+      love.audio.play(self.wallHitSound)
     end
     if self.y < 0 then
       self.y = 0
       self.vy = -self.vy
+      love.audio.play(self.wallHitSound)
     end
     if self.y > love.graphics.getHeight() then
       self.loseCallback(self)
@@ -29,6 +32,8 @@ function balllib.newBall(loseCallback)
     if self.x + self.w > love.graphics.getWidth() then
       self.x = love.graphics.getWidth() - self.w
       self.vx = -self.vx
+      self.wallHitSound:setPitch(math.random() / 5 + 1)
+      love.audio.play(self.wallHitSound)
     end
   end
 

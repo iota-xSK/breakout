@@ -43,11 +43,14 @@ function gamelib.new()
 
   game.bricks = {}
 
+  local lossSound = love.audio.newSource("loss.wav", "static")
   function game.gameLoss(ball)
     gameStateMachine[game.gameState]["game end"](game)
+    love.audio.play(lossSound)
   end
 
   local font = love.graphics.newFont("DepartureMono-1.500/DepartureMono-Regular.otf", 40)
+  local clickSound = love.audio.newSource("click.wav", "static")
 
   game.ball = balllib.newBall(game.gameLoss)
   game.paddle = paddlelib.new(500, 100)
@@ -72,6 +75,8 @@ function gamelib.new()
         love.graphics.getWidth()/8, 20,
         colorLUT[j],
         function()
+          clickSound:setPitch(math.random() / 5 + 1)
+          love.audio.play(clickSound)
           game.points = game.points + 1
           if game.points >= 64 then
            gameStateMachine[game.gameState]["game end"](game)
