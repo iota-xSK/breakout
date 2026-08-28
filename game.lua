@@ -25,11 +25,12 @@ local gameStateMachine = {
 
         game.ball.vx = 0
         game.ball.vy = 0
-      game.paddle.hits = 0
+        game.paddle.hits = 0
 
         for k,v in ipairs(game.bricks) do
           v.visible = true
         end
+        game.points = 0
     end
   }
 }
@@ -46,8 +47,11 @@ function gamelib.new()
     gameStateMachine[game.gameState]["game end"](game)
   end
 
+  local font = love.graphics.newFont("DepartureMono-1.500/DepartureMono-Regular.otf", 40)
+
   game.ball = balllib.newBall(game.gameLoss)
   game.paddle = paddlelib.new(500, 100)
+  game.points = 0
 
   local colorLUT = {
     {0.9176, 0.5020, 0.2824},
@@ -66,7 +70,13 @@ function gamelib.new()
         (i-1)*love.graphics.getWidth()/8,
         100 + (j-1)*30,
         love.graphics.getWidth()/8, 20,
-        colorLUT[j]
+        colorLUT[j],
+        function()
+          game.points = game.points + 1
+          if game.points >= 64 then
+           gameStateMachine[game.gameState]["game end"](game)
+          end
+        end
       )
       table.insert(game.bricks, brick)
     end
@@ -86,12 +96,15 @@ function gamelib.new()
 
 
    function game:draw()
+     love.graphics.setFont(font)
      love.graphics.setColor(1, 1, 1)
      for k,v in ipairs(self.bricks) do
        v:draw()
      end
      self.paddle:draw()
      self.ball:draw()
+     love.graphics.setColor(1, 1, 1)
+     love.graphics.print(tostring(self.points), love.graphics.getWidth()/2 - 40, 40)
    end
 
    function game:keyboardPressed(key, scancode, isrepeat)
