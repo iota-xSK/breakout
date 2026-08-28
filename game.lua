@@ -49,9 +49,25 @@ function gamelib.new()
   game.ball = balllib.newBall(game.gameLoss)
   game.paddle = paddlelib.new(500, 100)
 
+  local colorLUT = {
+    {0.9176, 0.5020, 0.2824},
+    {0.8588, 0.9176, 0.2823},
+    {0.3804, 0.9176, 0.2824},
+    {0.2823, 0.9176, 0.6588},
+    {0.2823, 0.6980, 0.9176},
+    {0.2823, 0.6980, 0.9176},
+    {0.3412, 0.2824, 0.9176},
+    {0.8196, 0.2824, 0.9176},
+    {0.9176, 0.2824, 0.5372}
+    }
   for i=1,8 do
     for j=1,8 do
-      local brick = bricklib.newBrick((i-1)*love.graphics.getWidth()/8, 100 + (j-1)*30, love.graphics.getWidth()/8, 20)
+      local brick = bricklib.newBrick(
+        (i-1)*love.graphics.getWidth()/8,
+        100 + (j-1)*30,
+        love.graphics.getWidth()/8, 20,
+        colorLUT[j]
+      )
       table.insert(game.bricks, brick)
     end
    end

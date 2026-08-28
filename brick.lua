@@ -1,12 +1,13 @@
 local brick = {}
-function brick.newBrick(x, y, w, h, callback)
+function brick.newBrick(x, y, w, h, color, callback)
   local Rect = {
     x = x,
     y = y,
     w = w,
     h = h,
     visible = true,
-    callback = callback
+    callback = callback,
+    color = color
   }
 
   function Rect:update(ball)
@@ -55,6 +56,7 @@ function brick.newBrick(x, y, w, h, callback)
 
   function Rect:draw()
     if self.visible then
+      love.graphics.setColor(self.color[1], self.color[2], self.color[3])
       love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
     end
   end
